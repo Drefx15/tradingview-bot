@@ -1,17 +1,14 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request
 
 app = Flask(__name__)
 
-@app.route('/', methods=['POST'])
+@app.route('/webhook', methods=['POST'])
 def webhook():
     data = request.json
-    print("Received alert:", data)  # Log data for debugging
-    # Put your trading logic here
-    return jsonify({"status": "received", "data": data})
-
-@app.route('/', methods=['GET'])
-def home():
-    return "Webhook is live!"
+    print("✅ Webhook received:", data)
+    return '', 200
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=10000)
+    import os
+    port = int(os.environ.get('PORT', 10000))
+    app.run(host='0.0.0.0', port=port)
